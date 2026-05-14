@@ -357,7 +357,7 @@ KisMainWindow::KisMainWindow(QUuid uuid)
     d->viewManager = new KisViewManager(this, actionCollection());
     KConfigGroup group( KSharedConfig::openConfig(), "theme");
 #ifndef Q_OS_HAIKU
-    d->themeManager = new Digikam::ThemeManager(group.readEntry("Theme", "Krita dark"), this);
+    d->themeManager = new Digikam::ThemeManager(group.readEntry("Theme", "Ultra dark"), this);
 #endif
     d->windowStateConfig = KSharedConfig::openConfig()->group("MainWindow");
 
@@ -578,8 +578,8 @@ KisMainWindow::KisMainWindow(QUuid uuid)
     KisPart::instance()->notifyMainWindowIsBeingCreated(this);
 
     // If we have customized the toolbars, load that first
-    setLocalXMLFile(KoResourcePaths::locateLocal("data", "krita5.xmlgui"));
-    setXMLFile(":/kxmlgui5/krita5.xmlgui");
+    setLocalXMLFile(KoResourcePaths::locateLocal("data", "ultra5.xmlgui"));
+    setXMLFile(":/kxmlgui5/ultra5.xmlgui");
 
     guiFactory()->addClient(this);
     applyActionIconOverridesFromLocalXML();
@@ -1213,7 +1213,7 @@ void KisMainWindow::slotSaveCanceled(const QString &errMsg)
 {
     if (!errMsg.isEmpty()) {   // empty when cancelled by user
         KisUsageLogger::log(QString("Saving cancelled. Error:").arg(errMsg));
-        QMessageBox::critical(this, i18nc("@title:window", "Krita"), errMsg);
+        QMessageBox::critical(this, i18nc("@title:window", "Ultra"), errMsg);
     }
     else {
         KisUsageLogger::log(QString("Saving cancelled by the user."));
@@ -1310,7 +1310,7 @@ bool KisMainWindow::saveDocument(KisDocument *document, bool saveas, bool isExpo
     }
     else if (dlg.result() == KisDelayedSaveDialog::Ignored) {
         QMessageBox::critical(qApp->activeWindow(),
-                              i18nc("@title:window", "Krita"),
+                              i18nc("@title:window", "Ultra"),
                               i18n("You are saving a file while the image is "
                                    "still rendering. The saved file may be "
                                    "incomplete or corrupted.\n\n"
@@ -1989,7 +1989,7 @@ void KisMainWindow::slotStoragesWarning(const QString &/*location*/)
 
     if (!checkPaintOpAvailable()) {
         warning += i18n("\nThere are no brush presets available. Please enable a bundle that has presets before continuing.\n");
-        QMessageBox::critical(this, i18nc("@title:window", "Krita"), warning);
+        QMessageBox::critical(this, i18nc("@title:window", "Ultra"), warning);
 
         QAction *action = actionCollection()->action("manage_bundles");
         if (action) {
@@ -1998,7 +1998,7 @@ void KisMainWindow::slotStoragesWarning(const QString &/*location*/)
     }
 
     if (!checkActiveBundlesAvailable()) {
-        QMessageBox::warning(this, i18nc("@title:window", "Krita"), warning + i18n("\nOnly your local resources are available."));
+        QMessageBox::warning(this, i18nc("@title:window", "Ultra"), warning + i18n("\nOnly your local resources are available."));
     }
 
 }
@@ -2149,7 +2149,7 @@ void KisMainWindow::importVideoAnimation()
     KisDlgImportVideoAnimation dlg(this, activeView());
 
     if (dlg.exec() == QDialog::Accepted) {
-        const QTemporaryDir outputLocation(QDir::tempPath() + QDir::separator() + "krita" + QDir::separator() + "import_files");
+        const QTemporaryDir outputLocation(QDir::tempPath() + QDir::separator() + "ultra" + QDir::separator() + "import_files");
         RenderedFrames renderedFrames = dlg.renderFrames(QDir(outputLocation.path()));
         dbgFile << "Frames rendered to directory: " << outputLocation.path();
         QStringList documentInfoList = dlg.documentInfo();
@@ -2196,7 +2196,7 @@ void KisMainWindow::importVideoAnimation()
             KoColor bgColor(qc, cs);
 
             if (!document->newImage(name, width, height, cs, bgColor, KisConfig::RASTER_LAYER, 1, "", double(resolution / 72) )) {
-                QMessageBox::critical(qApp->activeWindow(), i18nc("@title:window", "Krita"), i18n("Failed to create new document. Animation import aborted."));
+                QMessageBox::critical(qApp->activeWindow(), i18nc("@title:window", "Ultra"), i18n("Failed to create new document. Animation import aborted."));
                 return;
             }
 
@@ -2215,7 +2215,7 @@ void KisMainWindow::importVideoAnimation()
         if (!status.isOk() && !status.isInternalError()) {
             QString msg = status.errorMessage();
             if (!msg.isEmpty())
-                QMessageBox::critical(qApp->activeWindow(), i18nc("@title:window", "Krita"), i18n("Could not finish import animation:\n%1", msg));
+                QMessageBox::critical(qApp->activeWindow(), i18nc("@title:window", "Ultra"), i18n("Could not finish import animation:\n%1", msg));
         }
 
         activeView()->canvasBase()->refetchDataFromImage();
@@ -2847,7 +2847,7 @@ void KisMainWindow::newWindow()
 #ifdef Q_OS_ANDROID
     // Check if current mainwindow exists, just to be sure.
     if (KisPart::instance()->currentMainwindow()) {
-        QMessageBox::warning(this, i18nc("@title:window", "Krita"),
+        QMessageBox::warning(this, i18nc("@title:window", "Ultra"),
                              "Creating a New Main Window is unsupported on Android");
         return;
     }
@@ -2870,7 +2870,7 @@ void KisMainWindow::checkSanity()
     // print error if the lcms engine is not available
     if (!KoColorSpaceEngineRegistry::instance()->contains("icc")) {
         // need to wait 1 event since exiting here would not work.
-        m_errorMessage = i18n("The Krita LittleCMS color management plugin is not installed. Krita will quit now.");
+        m_errorMessage = i18n("The Ultra LittleCMS color management plugin is not installed. Ultra will quit now.");
         m_dieOnError = true;
         QTimer::singleShot(0, this, SLOT(showErrorAndDie()));
         return;
@@ -3124,7 +3124,7 @@ void KisMainWindow::initializeGeometry()
 
 void KisMainWindow::showManual()
 {
-    QDesktopServices::openUrl(QUrl("https://docs.krita.org"));
+    QDesktopServices::openUrl(QUrl("https://docs.ultra.org"));
 }
 
 void KisMainWindow::showDockerTitleBars(bool show)
@@ -3210,7 +3210,7 @@ bool KisMainWindow::checkPaintOpAvailable()
 // This function will rerender the actions with icons in UI (toolbars, shortcuts options etc.)
 void KisMainWindow::applyActionIconOverridesFromLocalXML()
 {
-    QString xmlPath = KoResourcePaths::locateLocal("data", "krita5.xmlgui");
+    QString xmlPath = KoResourcePaths::locateLocal("data", "ultra5.xmlgui");
     QFile file(xmlPath);
     if (!file.exists()) {
         return;
