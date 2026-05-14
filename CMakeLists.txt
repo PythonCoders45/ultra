@@ -162,7 +162,7 @@ if(NOT DEFINED KRITA_ALPHA AND NOT DEFINED KRITA_BETA AND NOT DEFINED KRITA_RC)
     set(KRITA_STABLE 1) # do not edit
 endif()
 
-message(STATUS "Krita version: ${KRITA_VERSION_STRING}")
+message(STATUS "Ultra version: ${KRITA_VERSION_STRING}")
 
 # Define the generic version of the Krita libraries here
 # This makes it easy to advance it when the next Krita release comes.
@@ -329,8 +329,8 @@ option(LIMIT_LONG_TESTS "Run long running unittests in a limited quick mode" ON)
 configure_file(config-limit-long-tests.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-limit-long-tests.h)
 add_feature_info("Limit long tests" LIMIT_LONG_TESTS "Run long running unittests in a limited quick mode")
 
-option(BUILD_KRITA_QT_DESIGNER_PLUGINS "Build Qt Designer plugins for Krita widgets" OFF)
-add_feature_info("Build Qt Designer plugins" BUILD_KRITA_QT_DESIGNER_PLUGINS "Builds Qt Designer plugins for Krita widgets (use -DBUILD_KRITA_QT_DESIGNER_PLUGINS=ON to enable).")
+option(BUILD_KRITA_QT_DESIGNER_PLUGINS "Build Qt Designer plugins for Ultra widgets" OFF)
+add_feature_info("Build Qt Designer plugins" BUILD_KRITA_QT_DESIGNER_PLUGINS "Builds Qt Designer plugins for Ultra widgets (use -DBUILD_KRITA_QT_DESIGNER_PLUGINS=ON to enable).")
 
 option(ENABLE_UPDATERS "Enable updaters/update notifications" ON)
 configure_file(config-updaters.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-updaters.h)
@@ -352,19 +352,19 @@ if (ECM_ENABLE_SANITIZERS MATCHES address)
     set(ADDRESS_SANITIZER_ENABLED TRUE)
 endif()
 
-add_feature_info("ASAN address sanitizer" ADDRESS_SANITIZER_ENABLED "crash Krita if it violates address access rules (-DECM_ENABLE_SANITIZERS=address)")
+add_feature_info("ASAN address sanitizer" ADDRESS_SANITIZER_ENABLED "crash Ultra if it violates address access rules (-DECM_ENABLE_SANITIZERS=address)")
 
 # We don't want people to accidentally build unstable Krita versions if they
 # didn't mean to do so. This serves as an extra confirmation. You will get
 # errors during the configure step if you enable an unstable option.
 set(ALLOW_UNSTABLE "" CACHE STRING
-    "Semicolon-separated set of features that make Krita unstable, but you want to build with them anyway")
+    "Semicolon-separated set of features that make Ultra unstable, but you want to build with them anyway")
 string(TOUPPER "${ALLOW_UNSTABLE}" ALLOW_UNSTABLE)
 add_feature_info("Unstable features allowed" ON "${ALLOW_UNSTABLE}")
 
 if(BUILD_WITH_QT6 AND NOT "QT6" IN_LIST ALLOW_UNSTABLE)
     message(FATAL_ERROR
-        "Building Krita with Qt6 is not yet production-ready. Please don't "
+        "Building Ultra with Qt6 is not yet production-ready. Please don't "
         "package this and ship it as a stable version of the software.\n"
         "If you want to continue regardless, pass:\n"
         "    -DALLOW_UNSTABLE=QT6"
@@ -606,7 +606,7 @@ endif()
 
 set(HAVE_WAYLAND FALSE)
 if (TARGET Qt::WaylandClient)
-    message(STATUS "Found Qt::WaylandClient, enabling kritawayland platform")
+    message(STATUS "Found Qt::WaylandClient, enabling ultrawayland platform")
     set(HAVE_WAYLAND TRUE)
 
     # Qt 6.10 has split the private module, see above for a better explanation
@@ -669,13 +669,13 @@ return 0;
 endif()
 
 option(KRITA_QT_HAS_ENTER_LEAVE_PATCH "Qt has a custom patch for unbalanced enter/leave events" ON)
-add_feature_info("Qt: Unbalanced Enter/Leave patch" KRITA_QT_HAS_ENTER_LEAVE_PATCH "Krita will disable internal workarounds for unbalanced Enter/Leave")
+add_feature_info("Qt: Unbalanced Enter/Leave patch" KRITA_QT_HAS_ENTER_LEAVE_PATCH "Ultra will disable internal workarounds for unbalanced Enter/Leave")
 
 option(KRITA_QT_HAS_UNBALANCED_KEY_PRESS_RELEASE_PATCH "Qt has a custom patch for unbalanced KeyPress/KeyRelease events in non-latin layouts" ON)
-add_feature_info("Qt: Unbalanced KeyPress/KeyRelease in non-latin layout patch" KRITA_QT_HAS_UNBALANCED_KEY_PRESS_RELEASE_PATCH "Krita will disable internal workarounds for unbalanced KeyPress/KeyRelease events")
+add_feature_info("Qt: Unbalanced KeyPress/KeyRelease in non-latin layout patch" KRITA_QT_HAS_UNBALANCED_KEY_PRESS_RELEASE_PATCH "Ultra will disable internal workarounds for unbalanced KeyPress/KeyRelease events")
 
 option(KRITA_QT_HAS_UPDATE_COMPRESSION_PATCH "Qt has a custom patch for limiting FPS to the screen framerate" ON)
-add_feature_info("Qt: Compressed updates patch" KRITA_QT_HAS_UPDATE_COMPRESSION_PATCH "Krita will compress the screen updates to the maximum FPS of available displays")
+add_feature_info("Qt: Compressed updates patch" KRITA_QT_HAS_UPDATE_COMPRESSION_PATCH "Ultra will compress the screen updates to the maximum FPS of available displays")
 
 
 #
@@ -841,7 +841,7 @@ unset(CMAKE_REQUIRED_LIBRARIES)
 include (MacroAddFileDependencies)
 include (MacroBoolTo01)
 include (MacroEnsureOutOfSourceBuild)
-macro_ensure_out_of_source_build("Compiling Krita inside the source directory is not possible. Please refer to the build instruction https://community.kde.org/Krita#Build_Instructions")
+macro_ensure_out_of_source_build("Compiling Ultra inside the source directory is not possible.")
 
 
 # Note: OPTIONAL_COMPONENTS does not seem to be reliable
@@ -852,7 +852,7 @@ set_package_properties(Qt${QT_MAJOR_VERSION}Quick PROPERTIES
         DESCRIPTION "QtQuick"
         URL "https://www.qt.io/"
         TYPE OPTIONAL
-        PURPOSE "Optionally used for the touch gui for Krita")
+        PURPOSE "Optionally used for the touch gui for Ultra")
 
 macro_bool_to_01(Qt${QT_MAJOR_VERSION}Quick_FOUND HAVE_QT_QUICK)
 
@@ -861,7 +861,7 @@ set_package_properties(Qt${QT_MAJOR_VERSION}QuickWidgets PROPERTIES
         DESCRIPTION "QtQuickWidgets"
         URL "https://www.qt.io/"
         TYPE OPTIONAL
-        PURPOSE "Optionally used for the touch gui for Krita")
+        PURPOSE "Optionally used for the touch gui for Ultra")
 
 if (Qt${QT_MAJOR_VERSION}QuickWidgets_FOUND)
     # This is needed because Qt dependencies aren't added by ECM but by androideployqt,
@@ -873,7 +873,7 @@ if (Qt${QT_MAJOR_VERSION}QuickWidgets_FOUND)
             DESCRIPTION "QtQuickControls"
             URL "https://www.qt.io/"
             TYPE OPTIONAL
-            PURPOSE "Optionally used for the touch gui for Krita")
+            PURPOSE "Optionally used for the touch gui for Ultra")
 
 endif()
 
@@ -932,7 +932,7 @@ add_compile_definitions(
     QT_DISABLE_DEPRECATED_BEFORE=0x050E00
 )
 
-add_definitions(-DTRANSLATION_DOMAIN=\"krita\")
+add_definitions(-DTRANSLATION_DOMAIN=\"ultra\")
 
 #
 # The reason for this mode is that the Debug mode disable inlining
@@ -941,7 +941,7 @@ if(CMAKE_COMPILER_IS_GNUCXX)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}  -fext-numeric-literals")
 endif()
 
-option(KRITA_DEVS "For Krita developers. This modifies the DEBUG build type to use -O3 -g, while still enabling Q_ASSERT. This is necessary because the Qt5 cmake modules normally append QT_NO_DEBUG to any build type that is not labeled Debug")
+option(KRITA_DEVS "For Ultra developers. This modifies the DEBUG build type to use -O3 -g, while still enabling Q_ASSERT. This is necessary because the Qt5 cmake modules normally append QT_NO_DEBUG to any build type that is not labeled Debug")
 if (KRITA_DEVS)
     set(CMAKE_CXX_FLAGS_DEBUG "-O3 -g" CACHE STRING "" FORCE)
 endif()
@@ -1165,7 +1165,7 @@ find_package(GSL)
 set_package_properties(GSL PROPERTIES
     URL "https://www.gnu.org/software/gsl"
     TYPE RECOMMENDED
-    PURPOSE "Required by Krita's Transform tool.")
+    PURPOSE "Required by Ultra's Transform tool.")
 macro_bool_to_01(GSL_FOUND HAVE_GSL)
 configure_file(config-gsl.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-gsl.h )
 
@@ -1204,7 +1204,7 @@ set_package_properties(ZLIB PROPERTIES
     DESCRIPTION "Compression library"
     URL "https://www.zlib.net/"
     TYPE REQUIRED
-    PURPOSE "Required by Krita's PNG and PSD support")
+    PURPOSE "Required by Ultra's PNG and PSD support")
 macro_bool_to_01(ZLIB_FOUND HAVE_ZLIB)
 
 find_package(OpenEXR)
@@ -1218,7 +1218,7 @@ set_package_properties(TIFF PROPERTIES
     DESCRIPTION "TIFF Library and Utilities"
     URL "http://www.libtiff.org"
     TYPE OPTIONAL
-    PURPOSE "Required by the Krita TIFF filter")
+    PURPOSE "Required by the Ultra TIFF filter")
 include(CheckLibTIFFPSDSupport)
 configure_file(config-tiff.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-tiff.h)
 
@@ -1227,7 +1227,7 @@ set_package_properties(JPEG PROPERTIES
     DESCRIPTION "Free library for JPEG image compression. Note that libjpeg8 is NOT supported."
     URL "https://www.libjpeg-turbo.org"
     TYPE OPTIONAL
-    PURPOSE "Required by the Krita JPEG filter")
+    PURPOSE "Required by the Ultra JPEG filter")
 if (JPEG_FOUND)
     macro_bool_to_01(JPEG_FOUND HAVE_JPEG)
 endif()
@@ -1237,7 +1237,7 @@ set_package_properties(libjpeg-turbo PROPERTIES
     DESCRIPTION "libjpeg-turbo is a JPEG image codec that uses SIMD instructions (MMX, SSE2, AVX2, Neon, AltiVec) to accelerate baseline JPEG compression and decompression on x86, x86-64, Arm, and PowerPC systems, as well as progressive JPEG compression on x86 and x86-64 systems."
     URL "https://www.libjpeg-turbo.org"
     TYPE OPTIONAL
-    PURPOSE "Required by the Krita JPEG and TIFF filters")
+    PURPOSE "Required by the Ultra JPEG and TIFF filters")
 macro_bool_to_01(libjpeg-turbo_FOUND HAVE_JPEG_TURBO)
 configure_file(config-jpeg.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-jpeg.h )
 
@@ -1250,35 +1250,35 @@ set_package_properties(GIF PROPERTIES
     DESCRIPTION "Library for loading and saving gif files."
     URL "http://giflib.sourceforge.net/"
     TYPE OPTIONAL
-    PURPOSE "Required by the Krita GIF filter")
+    PURPOSE "Required by the Ultra GIF filter")
 
 find_package(HEIF "1.11.0")
 set_package_properties(HEIF PROPERTIES
     DESCRIPTION "Library for loading and saving heif files."
     URL "https://github.com/strukturag/libheif"
     TYPE OPTIONAL
-    PURPOSE "Required by the Krita HEIF filter")
+    PURPOSE "Required by the Ultra HEIF filter")
 
 find_package(OpenJPEG "2.3.0")
 set_package_properties(OpenJPEG PROPERTIES
     DESCRIPTION "Library for loading and saving jp2000 files."
     URL "https://www.openjpeg.org/"
     TYPE OPTIONAL
-    PURPOSE "Required by the Krita JP2000 filter")
+    PURPOSE "Required by the Ultra JP2000 filter")
 
 find_package(JPEGXL 0.7.0)
 set_package_properties(JPEGXL PROPERTIES
     DESCRIPTION "JPEG XL is a royalty-free raster-graphics file format that supports both lossy and lossless compression and is experimentally supported by Chrome, Firefox, and Edge."
     URL "https://github.com/libjxl/libjxl"
     TYPE OPTIONAL
-    PURPOSE "Required by the Krita JPEG-XL filter")
+    PURPOSE "Required by the Ultra JPEG-XL filter")
 
 find_package(FFTW3)
 set_package_properties(FFTW3 PROPERTIES
     DESCRIPTION "A fast, free C FFT library"
     URL "http://www.fftw.org/"
     TYPE OPTIONAL
-    PURPOSE "Required by the Krita for fast convolution operators and some G'Mic features")
+    PURPOSE "Required by the Ultra for fast convolution operators and some G'Mic features")
 macro_bool_to_01(FFTW3_FOUND HAVE_FFTW3)
 if (FFTW3_FOUND)
     # GMic uses the Threads library if available.
@@ -1290,7 +1290,7 @@ set_package_properties(OpenColorIO PROPERTIES
     DESCRIPTION "The OpenColorIO Library"
     URL "https://www.opencolorio.org"
     TYPE OPTIONAL
-    PURPOSE "Required by the Krita LUT docker")
+    PURPOSE "Required by the Ultra LUT docker")
 macro_bool_to_01(OpenColorIO_FOUND HAVE_OCIO)
 configure_file(config-ocio.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-ocio.h)
 
@@ -1298,7 +1298,7 @@ set_package_properties(PythonLibrary PROPERTIES
     DESCRIPTION "Python Library"
     URL "https://www.python.org"
     TYPE OPTIONAL
-    PURPOSE "Required by the Krita PyQt plugin")
+    PURPOSE "Required by the Ultra PyQt plugin")
 macro_bool_to_01(Python_Development_FOUND HAVE_PYTHONLIBS)
 
 find_package(SIP "4.19.13")
@@ -1306,7 +1306,7 @@ set_package_properties(SIP PROPERTIES
     DESCRIPTION "Support for generating SIP Python bindings"
     URL "https://github.com/Python-SIP/sip"
     TYPE OPTIONAL
-    PURPOSE "Required by the Krita PyQt plugin")
+    PURPOSE "Required by the Ultra PyQt plugin")
 macro_bool_to_01(SIP_FOUND HAVE_SIP)
 
 if (QT_MAJOR_VERSION STREQUAL "5")
@@ -1315,7 +1315,7 @@ if (QT_MAJOR_VERSION STREQUAL "5")
         DESCRIPTION "Python bindings for Qt5."
         URL "https://www.riverbankcomputing.com/software/pyqt/download"
         TYPE OPTIONAL
-        PURPOSE "Required by the Krita PyQt plugin")
+        PURPOSE "Required by the Ultra PyQt plugin")
     macro_bool_to_01(PYQT5_FOUND HAVE_PYQT5)
 
     set(PYQT_VERSION_TAG ${PYQT5_VERSION_TAG})
@@ -1329,7 +1329,7 @@ elseif (QT_MAJOR_VERSION STREQUAL "6")
         DESCRIPTION "Python bindings for Qt6."
         URL "https://www.riverbankcomputing.com/software/pyqt/download"
         TYPE OPTIONAL
-        PURPOSE "Required by the Krita PyQt plugin")
+        PURPOSE "Required by the Ultra PyQt plugin")
     macro_bool_to_01(PYQT6_FOUND HAVE_PYQT6)
 
     set(PYQT_VERSION_TAG ${PYQT6_VERSION_TAG})
@@ -1482,7 +1482,7 @@ set_package_properties(Poppler PROPERTIES
     DESCRIPTION "A PDF rendering library"
     URL "https://poppler.freedesktop.org/"
     TYPE OPTIONAL
-    PURPOSE "Required by the Krita PDF filter.")
+    PURPOSE "Required by the Ultra PDF filter.")
 
 ##
 ## Test for quazip
