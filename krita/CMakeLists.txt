@@ -142,6 +142,7 @@ elseif (WIN32)
     set_target_properties(krita PROPERTIES PREFIX "")
 else()
     add_executable(krita ${krita_SRCS})
+	set_target_properties(krita PROPERTIES OUTPUT_NAME "ultra")
 endif()
 target_link_libraries(krita
     PRIVATE
